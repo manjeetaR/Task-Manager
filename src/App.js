@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import './styles.css';
+import Alert from './Alert';
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -17,14 +18,30 @@ class App extends Component {
   state = {
     name: '',
     list: [],
-    deadline: ''
+    deadline: '',
+    alert: { shown: false, type: '', success: true }
   }
 
   componentWillMount() {
     this.getTasks()
   }
 
+  showAlert = ({ type, success }) => {
+    if(this.timeout) { clearTimeout(this.timeout) } // clears timeout so if there is an alert shown and another one is shown, the later one will not be cleared with past alert timeout
+    let alert = Object.assign({}, this.state.alert) // clones alert so shallow compare triggers state update
+    alert.shown = true;
+    alert.type = type;
+    alert.success = success;
+    this.setState({ alert })
+    this.timeout = setTimeout(() => {
+      alert.shown = false;
+      this.setState({ alert })
+    }, 1000)
+  }
+
   addTask = async () => {
+    this.showAlert({ type: 'add', success: true }) // if successful, success can be omitted since it is true by default
+    // if(error) { this.showAlert({ type: 'add', success: false }) } // if there is any error (change condition)
     const { name, list } = this.state
     // const subList = await posts.insert([{ name }]).execute()
     const subList = [{
@@ -42,6 +59,8 @@ class App extends Component {
   }
 
   deleteTask = async id => {
+    this.showAlert({ type: 'delete', success: true }) // if successful, success can be omitted since it is true by default
+    // if(error) { this.showAlert({ type: 'delete', success: false }) } // if there is any error (change condition)
     const { list } = this.state
     // const deletedList = await posts.delete().where(field => field("id").isLike(id)).execute()
     const deletedList = list.filter(item => item.id === id)
@@ -49,6 +68,8 @@ class App extends Component {
   }
 
   updateTask = async (id, name, deadline) => {
+    this.showAlert({ type: 'update', success: true }) // if successful, success can be omitted since it is true by default
+    // if(error) { this.showAlert({ type: 'update', success: false }) } // if there is any error (change condition)
     const { list } = this.state
     // const updatedList = await posts.update([{ name, deadline }]).where(field => field("id").isLike(id)).execute()
     const updatedList = [{ id, name, deadline }]
@@ -73,14 +94,15 @@ class App extends Component {
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
         </div>
         <ol>
-          {list.map(item =>
-            <li><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
+          {list.map((item, i) =>
+            <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
               {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
                 <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
               <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
               <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
           )}
         </ol>
+        {this.state.alert.shown && <Alert type={this.state.alert.type} success={this.state.alert.success} />}
       </main>
     )
   }
