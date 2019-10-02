@@ -13,6 +13,16 @@ const tasks = (state = defaultState, action) => {
         ...state,
         name: action.payload.name
       };
+    case ADD_LIST_ITEM:
+      return {
+        ...state,
+        list: [ ...state.list, action.payload ]
+      }
+    case ADD_DEADLINE:
+      return {
+        ...state,
+        deadline: action.payload.deadline
+      }
     default:
       return state;
   }
