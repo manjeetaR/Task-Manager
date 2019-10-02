@@ -8,9 +8,9 @@ An application to manage task(CRUD). Uses Jexia JS SDK.
 Add .env file with following details under the root folder:
 
 ```
-REACT_APP_PROJECT_ID=<Jexia Project ID>
-REACT_APP_KEY=<Jexia Key>
-REACT_APP_SECRET=<Jexia Secret Key>
+REACT_APP_PROJECT_ID=<Project ID>
+REACT_APP_KEY=<Key>
+REACT_APP_SECRET=<Secret Key>
 ```
 
 `npm start`
