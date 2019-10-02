@@ -10,10 +10,7 @@ export const addDeadline = deadline => ({
     payload: deadline
 });
 
-export const addListItem = (id, name, deadline) => ({
+export const addListItem = newListItem => ({
     type: types.ADD_LIST_ITEM,
-    payload: {
-        id,
-        name, deadline
-    }
+    payload: newListItem
 })

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './styles.css';
 import { connect } from 'react-redux';
-import { addName, addDeadline } from './actions/actionCreators';
+import { addName, addDeadline, addListItem } from './actions/actionCreators';
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -27,14 +27,15 @@ class App extends Component {
   }
 
   addTask = async () => {
-    const { name, list } = this.state
+    const { name, list, addListItem } = this.props
     // const subList = await posts.insert([{ name }]).execute()
     const subList = [{
       id: Math.random(),
       name,
       deadline: ""
     }]
-    if (subList.length > 0) this.setState({ list: [...list, ...subList] })
+    // if (subList.length > 0) this.setState({ list: [...list, ...subList] })
+    if (subList.length > 0) addListItem(subList)
   }
 
   getTasks = async () => {
@@ -96,7 +97,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addName: (name) => dispatch(addName(name)),
-  addDeadline: (deadline) => dispatch(addDeadline(deadline))
+  addDeadline: (deadline) => dispatch(addDeadline(deadline)),
+  addListItem: (id, name, deadline) => dispatch(addListItem(id, name, deadline))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

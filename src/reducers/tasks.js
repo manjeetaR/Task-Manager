@@ -11,7 +11,7 @@ const tasks = (state = defaultState, action) => {
     case ADD_NAME:
       return {
         ...state,
-        name: action.payload.name
+        name: action.payload
       };
     case ADD_LIST_ITEM:
       return {
@@ -21,7 +21,7 @@ const tasks = (state = defaultState, action) => {
     case ADD_DEADLINE:
       return {
         ...state,
-        deadline: action.payload.deadline
+        deadline: action.payload
       }
     default:
       return state;
