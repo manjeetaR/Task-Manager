@@ -6,6 +6,8 @@
 .pnp.js
 /src/initialize.js
 package-lock.json
+.env
+
 # testing
 /coverage
 

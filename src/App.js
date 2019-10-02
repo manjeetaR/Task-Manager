@@ -56,15 +56,13 @@ class App extends Component {
         <input onChange={e => this.setState({ name: e.target.value })} />
         <button onClick={this.addTask}>Add</button>
         <ol>
-          {list.map(item => {
-            debugger
-            return <Fragment><li><input onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} defaultValue={item.name} />
+          {list.map(item =>
+            <li><input onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} defaultValue={item.name} />
               {(item.deadline || deadline === item.id) ? <input defaultValue={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
                 <button onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
               <button onClick={() => this.update(item.id)}>Update</button>
               <button style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
-            </Fragment>
-          })}
+          )}
         </ol>
       </main>
     )
