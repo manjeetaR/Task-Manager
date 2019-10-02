@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { initialize, dataModule } from './initialize'
 
 initialize();
@@ -9,7 +9,8 @@ class App extends Component {
 
   state = {
     name: '',
-    list: []
+    list: [],
+    deadline: ''
   }
 
   componentWillMount() {
@@ -33,22 +34,37 @@ class App extends Component {
     if (deletedList.length > 0) this.setState({ list: list.filter(item => item.id !== deletedList[0].id) })
   }
 
-  updateTask = async (id, name) => {
+  updateTask = async (id, name, deadline) => {
     const { list } = this.state
-    let updatedList = await posts.update([{ name }]).where(field => field("id").isLike(id)).execute()
-    if (updatedList.length > 0) this.setState({ list: list.map(item => item.id === updatedList[0].id ? updatedList : item) })
+    let updatedList = await posts.update([{ name, deadline }]).where(field => field("id").isLike(id)).execute()
+    if (updatedList.length > 0) this.setState({ list: list.map(item => item.id === updatedList[0].id ? updatedList[0] : item) })
+  }
+
+  update = id => {
+    const { list } = this.state
+    const data = list.filter(value => value.id === id)[0]
+    this.updateTask(id, data.name, data.deadline)
+    this.setState({ deadline: '' })
   }
 
   render() {
-    const { list } = this.state
+    const { list, deadline } = this.state
     return (
       <main>
         <h1> Task Manager</h1>
-        <label>Add Task:  &nbsp;</label>
+        <label>&#128221;Add Task:  &nbsp;</label>
         <input onChange={e => this.setState({ name: e.target.value })} />
         <button onClick={this.addTask}>Add</button>
         <ol>
-          {list.map(item => <li><input onKeyDown={e => { if (e.keyCode === 13) this.updateTask(item.id, e.target.value) }} defaultValue={item.name} /><span style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>&nbsp;   x</span></li>)}
+          {list.map(item => {
+            debugger
+            return <Fragment><li><input onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} defaultValue={item.name} />
+              {(item.deadline || deadline === item.id) ? <input defaultValue={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
+                <button onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
+              <button onClick={() => this.update(item.id)}>Update</button>
+              <button style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
+            </Fragment>
+          })}
         </ol>
       </main>
     )
