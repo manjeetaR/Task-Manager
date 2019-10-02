@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './styles.css';
 import { connect } from 'react-redux';
-import { addName } from './actions/actionCreators';
+import { addName, addDeadline } from './actions/actionCreators';
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -95,7 +95,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addName: (name) => dispatch(addName(name))
+  addName: (name) => dispatch(addName(name)),
+  addDeadline: (deadline) => dispatch(addDeadline(deadline))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
