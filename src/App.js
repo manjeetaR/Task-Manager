@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './styles.css';
+import { connect } from 'react-redux';
+import { addName } from './actions/actionCreators';
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -86,4 +88,14 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = state => ({
+  name: state.name,
+  list: state.list,
+  deadline: state.deadline
+});
+
+const mapDispatchToProps = dispatch => ({
+  addName: (name) => dispatch(addName(name))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
