@@ -84,7 +84,7 @@ class App extends Component {
   }
   
   sort = asc => {
-    // We use as [...arr] as sort mutates original array
+    // We use [...arr] as sort mutates original array
     const sortedList = [...this.state.list].sort((a, b) => {
       // asc = a-b / desc = b-a
       const [left, right] = asc ? [a,b] : [b,a]
