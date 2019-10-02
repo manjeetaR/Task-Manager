@@ -82,6 +82,17 @@ class App extends Component {
     this.updateTask(id, data.name, data.deadline)
     this.setState({ deadline: '' })
   }
+  
+  sort = asc => {
+    // We use as [...arr] as sort mutates original array
+    const sortedList = [...this.state.list].sort((a, b) => {
+      // asc = a-b / desc = b-a
+      const [left, right] = asc ? [a,b] : [b,a]
+      return new Date(left.deadline).getTime() - new Date(right.deadline).getTime()
+    })
+    
+    this.setState({list: sortedList})
+  }
 
   render() {
     const { list, deadline } = this.state
@@ -92,6 +103,8 @@ class App extends Component {
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
+          <button className='buttonStyle' onClick={() => this.sort(true)}>Sort by Deadline (ASC)</button>
+          <button className='buttonStyle' onClick={this.sort}>Sort by Deadline (DESC)</button>
         </div>
         <ol>
           {list.map((item, i) =>
