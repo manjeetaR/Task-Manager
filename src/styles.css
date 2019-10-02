@@ -92,3 +92,26 @@ li {
   align-self: center;
   align-items: center;
 }
+
+/* Transition animation */
+.slide-enter {
+	opacity: 0.01;
+	transform: translateX(-100px);
+}
+
+.slide-enter.slide-enter-active {
+	opacity: 1;
+	transition: all 300ms ease-in;
+	transform: translateX(0);
+}
+
+.slide-leave {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.slide-leave.slide-leave-active {
+	opacity: 0.01;
+	transition: all 300ms ease-in;
+	transform: translateX(-100px);
+}
