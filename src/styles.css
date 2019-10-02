@@ -1,0 +1,94 @@
+
+
+
+html {
+  min-height: 100%;
+  background: linear-gradient(90deg, rgba(213,239,255,1) 0%, rgba(0,226,255,1) 50%, rgba(217,242,255,1) 100%);
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+  color: #ffef19;
+  font-family: 'Raleway', sans-serif;
+  font-size: 45px;
+}
+
+.labelStyle {
+  color: #ffef19;
+  font-family: 'Raleway', sans-serif;
+  font-size: 25px;
+}
+
+.notesEmoji {
+  padding: 5px;
+}
+
+.inputStyle {
+  width: 250px;
+  background: #fff;
+  color: black;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+  border: 0;
+  outline: 0;
+  padding: 10px;
+}
+
+.buttonStyle {
+  background: #fff;
+  color: #ff751a;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+  border: 0;
+  outline: 0;
+  padding: 10px;
+}
+
+ol {
+  color: #ff751a;
+  align-self: center;
+  align-items: center;
+}
+
+.listInput {
+  width: 150px;
+  background: #fff;
+  color: #ff751a;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+  border: 0;
+  outline: 0;
+  padding: 5px;
+}
+
+.listInputDeadline {
+  width: 150px;
+  background: #fff;
+  color: #ff751a;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+  border: 0;
+  padding: 3.5px;
+  margin: 5px;
+}
+
+.itemButton {
+    background: #fff;
+    color: #ff751a;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-right: 5px;
+}
+
+li {
+  align-self: center;
+  align-items: center;
+}

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { initialize, dataModule } from './initialize'
+import './styles.css';
+// import { initialize, dataModule } from './initialize'
 
 // initialize();
 
@@ -64,18 +65,20 @@ class App extends Component {
   render() {
     const { list, deadline } = this.state
     return (
-      <main>
-        <h1> Task Manager</h1>
-        <label>&#128221;Add Task:  &nbsp;</label>
-        <input onChange={e => this.setState({ name: e.target.value })} />
-        <button onClick={this.addTask}>Add</button>
+      <main className='container'>
+        <h1 className='header'> Task Manager</h1>
+        <label className='labelStyle'><span className='notesEmoji' role="img" aria-label="notes">&#128221;</span>Add Task:  &nbsp;</label>
+        <div>
+          <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
+          <button className='buttonStyle' onClick={this.addTask}>Add</button>
+        </div>
         <ol>
           {list.map(item =>
-            <li><input onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
-              {(item.deadline || deadline === item.id) ? <input value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
-                <button onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
-              <button onClick={() => this.update(item.id)}>Update</button>
-              <button style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
+            <li><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
+              {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
+                <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
+              <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
+              <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
           )}
         </ol>
       </main>
