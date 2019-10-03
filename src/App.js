@@ -45,7 +45,7 @@ class App extends Component {
     const { name, list } = this.state
     // const subList = await posts.insert([{ name }]).execute()
     const subList = [{
-      id: Math.random(),
+      id: this.getID(),
       name,
       deadline: ""
     }]
