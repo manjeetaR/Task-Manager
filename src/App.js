@@ -88,16 +88,14 @@ class App extends Component {
   }
   
 
-  handleSelect = evt => {
+  handleSelect = (evt, list, item) => {
     this.setState({
-      priority: evt.target.value
+      list: list.map(value => value.id === item.id ? { ...value, priority: evt.target.value } : value)
     });
-    console.log('select changed');
   };
 
   render() {
     const { list, deadline, alert, priority } = this.state;
-    console.log('list', list);
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
@@ -129,7 +127,7 @@ class App extends Component {
                   Add Deadline
                 </button>
               }
-              <Select handleSelect={this.handleSelect} priority={priority} />
+              <Select handleSelect={this.handleSelect} list={list} item={item} priority={priority} />
               <button
                 className='itemButton'
                 onClick={() => this.update(item.id)}
