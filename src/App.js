@@ -7,11 +7,18 @@ import Alert from './Alert';
 
 // const posts = dataModule.dataset("tasks")
 
-const dummyList = [{
-  id: 1,
-  name: "Meeting",
-  deadline: "2019-08-02"
-}]
+const dummyList = [
+  {
+    id: 1,
+    name: "Meeting",
+    deadline: "2019-08-02"
+  },
+  {
+    id: 2,
+    name: "Meeting 2",
+    deadline: "2019-08-03"
+  },
+]
 
 class App extends Component {
 
