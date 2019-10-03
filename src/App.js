@@ -84,7 +84,8 @@ class App extends Component {
   }
 
   timeLeft = (deadline) => {
-    return ((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)).toFixed(0)
+    const daysLeft = ((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)).toFixed(0)
+    return daysLeft > 0 ? `${daysLeft} day(s) left` : 'expired'
   }
 
   render() {
@@ -100,7 +101,7 @@ class App extends Component {
         <ol>
           {list.map((item, i) =>
             <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
-              {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)} day(s) left</button>}
+              {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)} </button>}
               {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
                 <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
               <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
