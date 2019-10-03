@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './styles.css';
 import Alert from './Alert';
+import Select from './Select';
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -19,7 +20,8 @@ class App extends Component {
     name: '',
     list: [],
     deadline: '',
-    alert: { shown: false, type: '', success: true }
+    alert: { shown: false, type: '', success: true },
+    priority: 'high'
   }
 
   componentWillMount() {
@@ -42,12 +44,13 @@ class App extends Component {
   addTask = async () => {
     this.showAlert({ type: 'add', success: true }) // if successful, success can be omitted since it is true by default
     // if(error) { this.showAlert({ type: 'add', success: false }) } // if there is any error (change condition)
-    const { name, list } = this.state
+    const { name, list, priority } = this.state
     // const subList = await posts.insert([{ name }]).execute()
     const subList = [{
       id: Math.random(),
       name,
-      deadline: ""
+      priority,
+      deadline: "",
     }]
     if (subList.length > 0) this.setState({ list: [...list, ...subList] })
   }
@@ -82,27 +85,60 @@ class App extends Component {
     this.updateTask(id, data.name, data.deadline)
     this.setState({ deadline: '' })
   }
+  
+
+  handleSelect = evt => {
+    this.setState({
+      priority: evt.target.value
+    });
+    console.log('select changed');
+  };
 
   render() {
-    const { list, deadline } = this.state
+    const { list, deadline, priority, alert } = this.state
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
         <label className='labelStyle'><span className='notesEmoji' role="img" aria-label="notes">&#128221;</span>Add Task:  &nbsp;</label>
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
+          <Select handleSelect={this.handleSelect} priority={priority} />
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
         </div>
         <ol>
           {list.map((item, i) =>
             <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
-              {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
-                <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
-              <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
-              <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
+              {(item.deadline || deadline === item.id) ?
+                <input
+                  className='listInputDeadline'
+                  value={item.deadline} 
+                  onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} 
+                  type="date" defaultValue={item.deadline}
+                /> :
+                <button
+                  className='itemButton'
+                  onClick={() => this.setState({ deadline: item.id })}
+                >
+                  Add Deadline
+                </button>
+              }
+              <button
+                className='itemButton'
+                onClick={() => this.update(item.id)}
+              >
+                Update
+              </button>
+              <button
+                className='itemButton'
+                style={{ color: 'red' }}
+                onClick={() => this.deleteTask(item.id)}
+              >
+                X
+              </button>
+            </li>
           )}
         </ol>
-        {this.state.alert.shown && <Alert type={this.state.alert.type} success={this.state.alert.success} />}
+        {alert.shown && <Alert type={alert.type} success={alert.success} />}
       </main>
     )
   }
