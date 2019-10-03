@@ -49,8 +49,8 @@ class App extends Component {
     const subList = [{
       id: Math.random(),
       name,
-      priority,
       deadline: "",
+      priority
     }]
     if (subList.length > 0) this.setState({ list: [...list, ...subList] })
   }
@@ -70,19 +70,19 @@ class App extends Component {
     if (deletedList.length > 0) this.setState({ list: list.filter(item => item.id !== deletedList[0].id) })
   }
 
-  updateTask = async (id, name, deadline) => {
+  updateTask = async (id, name, deadline, priority) => {
     this.showAlert({ type: 'update', success: true }) // if successful, success can be omitted since it is true by default
     // if(error) { this.showAlert({ type: 'update', success: false }) } // if there is any error (change condition)
     const { list } = this.state
     // const updatedList = await posts.update([{ name, deadline }]).where(field => field("id").isLike(id)).execute()
-    const updatedList = [{ id, name, deadline }]
+    const updatedList = [{ id, name, deadline, priority }]
     if (updatedList.length > 0) this.setState({ list: list.map(item => item.id === updatedList[0].id ? updatedList[0] : item) })
   }
 
   update = id => {
     const { list } = this.state
     const data = list.filter(value => value.id === id)[0]
-    this.updateTask(id, data.name, data.deadline)
+    this.updateTask(id, data.name, data.deadline, data.priority)
     this.setState({ deadline: '' })
   }
   
@@ -95,24 +95,29 @@ class App extends Component {
   };
 
   render() {
-    const { list, deadline, priority, alert } = this.state
+    const { list, deadline, alert, priority } = this.state
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
         <label className='labelStyle'><span className='notesEmoji' role="img" aria-label="notes">&#128221;</span>Add Task:  &nbsp;</label>
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
-          <Select handleSelect={this.handleSelect} priority={priority} />
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
         </div>
         <ol>
           {list.map((item, i) =>
-            <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
+            <li key={i}>
+              <div className={`priority ${item.priority}`}>{item.priority.toUpperCase()}</div>
+              <input 
+                className='listInput' 
+                onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })}
+                value={item.name} 
+              />
               {(item.deadline || deadline === item.id) ?
                 <input
                   className='listInputDeadline'
-                  value={item.deadline} 
-                  onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} 
+                  value={item.deadline}
+                  onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })}
                   type="date" defaultValue={item.deadline}
                 /> :
                 <button
@@ -122,6 +127,7 @@ class App extends Component {
                   Add Deadline
                 </button>
               }
+              <Select handleSelect={this.handleSelect} priority={priority} />
               <button
                 className='itemButton'
                 onClick={() => this.update(item.id)}
