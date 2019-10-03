@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   showAlert = ({ type, success }) => {
-    if(this.timeout) { clearTimeout(this.timeout) } // clears timeout so if there is an alert shown and another one is shown, the later one will not be cleared with past alert timeout
+    if (this.timeout) { clearTimeout(this.timeout) } // clears timeout so if there is an alert shown and another one is shown, the later one will not be cleared with past alert timeout
     let alert = Object.assign({}, this.state.alert) // clones alert so shallow compare triggers state update
     alert.shown = true;
     alert.type = type;
@@ -112,6 +112,11 @@ class App extends Component {
     this.setState({sortDirection: direction}, () => this.sort());
   }
 
+  timeLeft = (deadline) => {
+    const daysLeft = ((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)).toFixed(0)
+    return daysLeft > 0 ? `${daysLeft} day(s) left` : 'expired'
+  }
+
   render() {
     const { list, deadline } = this.state
     return (
@@ -129,6 +134,7 @@ class App extends Component {
         <ol>
           {list.map((item, i) =>
             <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
+              {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)}</button>}
               {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
                 <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
               <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
