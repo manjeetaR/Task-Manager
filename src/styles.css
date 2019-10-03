@@ -67,7 +67,7 @@ ol {
 }
 
 .listInputDeadline {
-  width: 150px;
+  width: 200px;
   background: #fff;
   color: #ff751a;
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
@@ -101,7 +101,7 @@ li {
   justify-content: center;
   color: white;
   position: absolute;
-  bottom: 20px; 
+  bottom: 20px;
   text-align: center;
   border-radius: 10px;
 }
