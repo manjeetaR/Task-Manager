@@ -1,8 +1,13 @@
-import { ADD_DEADLINE, ADD_NAME, ADD_LIST_ITEM } from '../actions/actionTypes';
+import {
+  ADD_DEADLINE,
+  ADD_NAME,
+  ADD_LIST_ITEM,
+  DELETE_LIST_ITEM
+} from '../actions/actionTypes';
 
 const defaultState = {
   name: '',
-  list: [],
+  list: [{ id: 1, name: 'Meeting', deadline: '2019-08-02' }],
   deadline: ''
 };
 
@@ -16,13 +21,18 @@ const tasks = (state = defaultState, action) => {
     case ADD_LIST_ITEM:
       return {
         ...state,
-        list: [ ...state.list, action.payload ]
-      }
+        list: [...state.list, action.payload]
+      };
     case ADD_DEADLINE:
       return {
         ...state,
         deadline: action.payload
-      }
+      };
+    case DELETE_LIST_ITEM:
+      return {
+        ...state,
+        list: state.list.filter(item => item.id !== action.payload.id)
+      };
     default:
       return state;
   }
