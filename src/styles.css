@@ -197,6 +197,8 @@ li {
 	top: 2px;
 }
 
+/* <Alert /> styles  */
+
 .alert {
   width: 100%;
   left: 0;
@@ -205,17 +207,26 @@ li {
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1.7rem;
   position: fixed;
-  bottom: 20px; 
+  bottom: 0px; 
   text-align: center;
   z-index: 10;
+}
+
+#success {
+  background-color: rgba(0, 55, 255, .7);
+}
+
+#error {
+  background-color: rgba(255, 6, 98, .7);
 }
 
 /* Transition animation for Alert */
 .down-enter {
 	opacity: 0.01;
-	transform: translateY(-100px);
+	transform: translateY(100px);
 }
 
 .down-enter.down-enter-active {
@@ -232,10 +243,12 @@ li {
 .down-leave.down-leave-active {
 	opacity: 0.01;
 	transition: all 300ms ease-in;
-	transform: translateY(-100px);
+	transform: translateY(100px);
 }
 
 /* END Transition animation for Alert */
+
+/* END </Alert > styles  */
 
 .priority {
   padding: 5px;
@@ -258,13 +271,6 @@ li {
   background-color: #4BB543;
 }
 
-#success {
-  background-color: #4BB543;
-}
-
-#error {
-  background-color: #cc0000;
-}
 
 .loginContainer {
   width: 25em;
