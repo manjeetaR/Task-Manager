@@ -11,7 +11,8 @@ import Select from './Select';
 const dummyList = [{
   id: 1,
   name: "Meeting",
-  deadline: "2019-08-02"
+  deadline: "2019-08-02",
+  priority: 'high'
 }]
 
 class App extends Component {
@@ -95,7 +96,8 @@ class App extends Component {
   };
 
   render() {
-    const { list, deadline, alert, priority } = this.state
+    const { list, deadline, alert, priority } = this.state;
+    console.log('list', list);
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
@@ -107,7 +109,7 @@ class App extends Component {
         <ol>
           {list.map((item, i) =>
             <li key={i}>
-              <div className={`priority ${item.priority}`}>{item.priority.toUpperCase()}</div>
+              <span className={`priority ${item.priority}`}>{item.priority.toUpperCase()}</span>
               <input 
                 className='listInput' 
                 onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })}

@@ -118,8 +118,12 @@ li {
 }
 
 .priority {
-  padding: 10px;
+  padding: 5px;
   color: #fff;
+  width: fit-content;
+  margin: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 .high {
