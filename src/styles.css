@@ -22,15 +22,16 @@ body {
 }
 
 .header {
-	color: #ffef19;
-	font-family: 'Raleway', sans-serif;
 	font-size: 45px;
 }
 
 .labelStyle {
-	color: #ffef19;
-	font-family: 'Raleway', sans-serif;
 	font-size: 25px;
+}
+
+.header,
+.labelStyle {
+  color: #ffef19;
 }
 
 .notesEmoji {
