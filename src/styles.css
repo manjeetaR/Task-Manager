@@ -72,6 +72,17 @@ html {
   border-radius: 2px;
 }
 
+.selectStyle {
+  color: #ff751a;
+  background: #fff;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+  border: 0;
+  outline: 0;
+  padding: 10px;
+  margin-right: 5px;
+  height: 25px;
+}
+
 ol {
   color: #ff751a;
   align-self: center;
@@ -102,6 +113,22 @@ ol {
 }
 
 .itemButton {
+    background: #fff;
+    color: #ff751a;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+li {
+  align-self: center;
+  align-items: center;
+  margin: 10px 0;
 	background: #fff;
 	color: #ff751a;
 	box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
@@ -112,12 +139,6 @@ ol {
 	padding-right: 15px;
 	margin-right: 5px;
 	cursor: pointer;
-}
-
-li {
-	align-self: center;
-	align-items: center;
-	margin: 5px 0;
 }
 
 /* Transition animation */
@@ -182,6 +203,27 @@ li {
   bottom: 20px; 
   text-align: center;
   border-radius: 10px;
+}
+
+.priority {
+  padding: 5px;
+  color: #fff;
+  width: fit-content;
+  margin: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.high {
+  background-color: #cc0000;
+}
+
+.medium {
+  background-color: #ffef19;
+}
+
+.low {
+  background-color: #4BB543;
 }
 
 #success {

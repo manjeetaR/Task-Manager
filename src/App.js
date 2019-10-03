@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './styles.css';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Alert from './Alert';
+import Select from './Select';
 import Checkbox from './Checkbox';
 import Search from './Search';
 // import { initialize, dataModule } from './initialize'
@@ -9,19 +10,6 @@ import Search from './Search';
 // initialize();
 
 // const posts = dataModule.dataset("tasks")
-
-const dummyList = [
-  {
-    id: 1,
-    name: "Meeting",
-    deadline: "2019-10-01T13:00",
-  },
-  {
-    id: 2,
-    name: "Meeting 2",
-    deadline: "2019-10-01T13:00"
-  }
-]
 
 
 const sortSymbols = {
@@ -67,6 +55,7 @@ class App extends Component {
       name,
       deadline: "",
       isChecked: false,
+      priority: 'high',
       checkedCallback: (self) => {
         this.setState({ list: this.state.list.map(value => value.id === self.id ? { ...value, isChecked: self.isChecked } : value) });
       }
@@ -80,6 +69,7 @@ class App extends Component {
       id: 1,
       name: "Meeting",
       deadline: "2019-08-02",
+      priority: 'high',
       isChecked: false,
       checkedCallback: (self) => {
         this.setState({ list: this.state.list.map(value => value.id === self.id ? { ...value, isChecked: self.isChecked } : value) });
@@ -105,19 +95,19 @@ class App extends Component {
     if (deletedList.length > 0) this.setState({ list: list.filter(item => item.id !== deletedList[0].id) })
   };
 
-  updateTask = async (id, name, deadline, isChecked, checkedCallback) => {
+  updateTask = async (id, name, deadline, isChecked, checkedCallback, priority) => {
     this.showAlert({ type: 'update', success: true }) // if successful, success can be omitted since it is true by default
     // if(error) { this.showAlert({ type: 'update', success: false }) } // if there is any error (change condition)
     const { list } = this.state;
     // const updatedList = await posts.update([{ name, deadline }]).where(field => field("id").isLike(id)).execute()
-    const updatedList = [{ id, name, deadline, isChecked, checkedCallback }];
+    const updatedList = [{ id, name, deadline, isChecked, checkedCallback, priority }];
     if (updatedList.length > 0) this.setState({ list: list.map(item => item.id === updatedList[0].id ? updatedList[0] : item) });
   };
 
   update = id => {
     const { list } = this.state;
     const data = list.filter(value => value.id === id)[0];
-    this.updateTask(id, data.name, data.deadline, data.isChecked, data.checkedCallback);
+    this.updateTask(id, data.name, data.deadline, data.isChecked, data.checkedCallback, data.priority);
     this.setState({ deadline: '' });
   };
 
@@ -146,8 +136,15 @@ class App extends Component {
     return daysLeft > 0 ? `${daysLeft} day(s) left` : 'expired'
   }
 
+
+  handleSelect = (evt, list, item) => {
+    this.setState({
+      list: list.map(value => value.id === item.id ? { ...value, priority: evt.target.value } : value)
+    });
+  };
+
   render() {
-    const { list, deadline, searchText } = this.state;
+    const { list, deadline, searchText, alert } = this.state;
     return (
       <main className="container">
         <h1 className="header"> Task Manager</h1>
@@ -177,6 +174,7 @@ class App extends Component {
               item.name.toLowerCase().includes(searchText) && (
                 <li key={item.id}>
                   <Checkbox task={item} />
+                  <span className={`priority ${item.priority}`}>{item.priority && item.priority.toUpperCase()}</span>
                   <input
                     className="listInput"
                     onChange={e =>
@@ -210,6 +208,7 @@ class App extends Component {
                         Add Deadline
 									</button>
                     )}
+                  <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
                   <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
                     Update
 								</button>
