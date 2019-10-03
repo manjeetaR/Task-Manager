@@ -80,7 +80,7 @@ class App extends Component {
 				</label>
 				<div>
 					<input className="inputStyle" onChange={e => this.setState({ name: e.target.value })} />
-					<button className="buttonStyle" onClick={this.addTask}>
+					<button className="buttonStyle buttonAnimate" onClick={this.addTask}>
 						Add
 					</button>
 				</div>
@@ -120,15 +120,15 @@ class App extends Component {
 										defaultValue={item.deadline}
 									/>
 								) : (
-									<button className="itemButton" onClick={() => this.setState({ deadline: item.id })}>
+									<button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
 										Add Deadline
 									</button>
 								)}
-								<button className="itemButton" onClick={() => this.update(item.id)}>
+								<button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
 									Update
 								</button>
 								<button
-									className="itemButton"
+									className="itemButton buttonAnimate"
 									style={{ color: 'red' }}
 									onClick={() => this.deleteTask(item.id)}
 								>
