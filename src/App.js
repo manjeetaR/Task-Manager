@@ -16,9 +16,7 @@ const dummyList = [{
 class App extends Component {
 
   state = {
-    name: '',
     list: [],
-    deadline: '',
     alert: { shown: false, type: '', success: true }
   }
 
