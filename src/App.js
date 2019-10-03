@@ -1,6 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt, faPen, faTrashAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 import Alert from './Alert';
+
 // import { initialize, dataModule } from './initialize'
 
 // initialize();
@@ -91,15 +94,15 @@ class App extends Component {
         <label className='labelStyle'><span className='notesEmoji' role="img" aria-label="notes">&#128221;</span>Add Task:  &nbsp;</label>
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
-          <button className='buttonStyle' onClick={this.addTask}>Add</button>
+          <button className='buttonStyle' onClick={this.addTask}><FontAwesomeIcon icon={ faPlus }/> </button>
         </div>
         <ol>
           {list.map((item, i) =>
             <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
               {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="date" defaultValue={item.deadline} /> :
-                <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
-              <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
-              <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
+                <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}><FontAwesomeIcon icon={ faCalendarAlt }/> Add Deadline</button>}
+              <button className='itemButton' onClick={() => this.update(item.id)}><FontAwesomeIcon icon={faPen} /></button>
+              <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}><FontAwesomeIcon icon={ faTrashAlt }/></button></li>
           )}
         </ol>
         {this.state.alert.shown && <Alert type={this.state.alert.type} success={this.state.alert.success} />}
