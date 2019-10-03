@@ -39,10 +39,10 @@ class App extends Component {
     alert.type = type;
     alert.success = success;
     this.setState({ alert });
-    this.timeout = setTimeout(() => {
-      alert.shown = false;
-      this.setState({ alert })
-    }, 1000);
+    //this.timeout = setTimeout(() => {
+    //  alert.shown = false;
+    //  this.setState({ alert })
+   // }, 1000);
   };
 
   addTask = async () => {
@@ -217,12 +217,18 @@ class App extends Component {
             ))}
           </CSSTransitionGroup>
         </ol>
-        {this.state.alert.shown && (
-          <Alert
-            type={this.state.alert.type}
-            success={this.state.alert.success}
-          />
-        )}
+        <CSSTransitionGroup
+            transitionName="down"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+          {this.state.alert.shown && (
+            <Alert
+              type={this.state.alert.type}
+              success={this.state.alert.success}
+            />
+          )}
+        </CSSTransitionGroup>
       </main>
     );
   }
