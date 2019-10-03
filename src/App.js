@@ -21,8 +21,7 @@ class App extends Component {
     name: '',
     list: [],
     deadline: '',
-    alert: { shown: false, type: '', success: true },
-    priority: 'high'
+    alert: { shown: false, type: '', success: true }
   }
 
   componentWillMount() {
@@ -95,7 +94,7 @@ class App extends Component {
   };
 
   render() {
-    const { list, deadline, alert, priority } = this.state;
+    const { list, deadline, alert } = this.state;
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
@@ -127,7 +126,7 @@ class App extends Component {
                   Add Deadline
                 </button>
               }
-              <Select handleSelect={this.handleSelect} list={list} item={item} priority={priority} />
+              <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
               <button
                 className='itemButton'
                 onClick={() => this.update(item.id)}
