@@ -104,7 +104,7 @@ class App extends Component {
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
           <button className='buttonStyle' onClick={() => this.sort(true)}>Sort by Deadline (ASC)</button>
-          <button className='buttonStyle' onClick={this.sort}>Sort by Deadline (DESC)</button>
+          <button className='buttonStyle' onClick={() => this.sort()}>Sort by Deadline (DESC)</button>
         </div>
         <ol>
           {list.map((item, i) =>
