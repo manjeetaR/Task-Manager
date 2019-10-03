@@ -39,10 +39,10 @@ class App extends Component {
     alert.type = type;
     alert.success = success;
     this.setState({ alert });
-    //this.timeout = setTimeout(() => {
-    //  alert.shown = false;
-    //  this.setState({ alert })
-   // }, 1000);
+    this.timeout = setTimeout(() => {
+      alert.shown = false;
+      this.setState({ alert })
+    }, 1800);
   };
 
   addTask = async () => {
@@ -219,7 +219,7 @@ class App extends Component {
         </ol>
         <CSSTransitionGroup
             transitionName="down"
-            transitionEnterTimeout={500}
+            transitionEnterTimeout={300}
             transitionLeaveTimeout={300}
           >
           {this.state.alert.shown && (
