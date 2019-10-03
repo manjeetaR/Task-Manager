@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './styles.css';
+import { CSSTransitionGroup } from 'react-transition-group';
 import Alert from './Alert';
 import Search from './Search';
 // import { initialize, dataModule } from './initialize'
@@ -11,10 +12,20 @@ import Search from './Search';
 const dummyList = [
   {
     id: 1,
-    name: 'Meeting',
-    deadline: '2019-08-02'
+    name: "Meeting",
+    deadline: "2019-08-02",
+  },
+  {
+    id: 2,
+    name: "Meeting 2",
+    deadline: "2019-08-03"
   }
-];
+]
+
+const sortSymbols = {
+  "asc": "▲",
+  "desc": "▼"
+}
 
 class App extends Component {
   state = {
@@ -22,30 +33,16 @@ class App extends Component {
     list: [],
     deadline: '',
     alert: { shown: false, type: '', success: true },
-    searchText: ''
+    searchText: '',
+    sortDirection: 'asc'
   };
 
   componentWillMount() {
     this.getTasks();
   }
 
-  showAlert = ({ type, success }) => {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    } // clears timeout so if there is an alert shown and another one is shown, the later one will not be cleared with past alert timeout
-    let alert = Object.assign({}, this.state.alert); // clones alert so shallow compare triggers state update
-    alert.shown = true;
-    alert.type = type;
-    alert.success = success;
-    this.setState({ alert });
-    this.timeout = setTimeout(() => {
-      alert.shown = false;
-      this.setState({ alert });
-    }, 1000);
-  };
-
   addTask = async () => {
-    this.showAlert({ type: 'add', success: true }); // if successful, success can be omitted since it is true by default
+    this.showAlert({ type: 'add', success: true }) // if successful, success can be omitted since it is true by default
     // if(error) { this.showAlert({ type: 'add', success: false }) } // if there is any error (change condition)
     const { name, list } = this.state;
     // const subList = await posts.insert([{ name }]).execute()
@@ -53,8 +50,8 @@ class App extends Component {
       {
         id: Math.random(),
         name,
-        deadline: ''
-      }
+        deadline: '',
+      },
     ];
     if (subList.length > 0) this.setState({ list: [...list, ...subList] });
   };
@@ -63,6 +60,18 @@ class App extends Component {
     // const list = await posts.select().execute()
     const list = dummyList;
     if (list.length > 0) this.setState({ list });
+  };
+  showAlert = ({ type, success }) => {
+    if (this.timeout) { clearTimeout(this.timeout) } // clears timeout so if there is an alert shown and another one is shown, the later one will not be cleared with past alert timeout
+    let alert = Object.assign({}, this.state.alert) // clones alert so shallow compare triggers state update
+    alert.shown = true;
+    alert.type = type;
+    alert.success = success;
+    this.setState({ alert });
+    this.timeout = setTimeout(() => {
+      alert.shown = false;
+      this.setState({ alert });
+    }, 1000);
   };
 
   deleteTask = async id => {
@@ -102,50 +111,71 @@ class App extends Component {
     this.setState({ searchText });
   };
 
-  render() {
-    const { list, deadline } = this.state;
-    const searchText = this.state.searchText.toLowerCase();
+  sort = () => {
+    // We use [...arr] as sort mutates original array
+    const sortedList = [...this.state.list].sort((a, b) => {
+      // asc = a-b / desc = b-a
+      const [left, right] = this.state.sortDirection === 'asc' ? [a, b] : [b, a]
+      return new Date(left.deadline).getTime() - new Date(right.deadline).getTime()
+    })
 
+    this.setState({ list: sortedList })
+  }
+
+  toggleSortDirection = () => {
+    const direction = this.state.sortDirection === 'asc' ? 'desc' : 'asc'
+    this.setState({ sortDirection: direction }, () => this.sort());
+  }
+
+  timeLeft = (deadline) => {
+    const daysLeft = ((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)).toFixed(0)
+    return daysLeft > 0 ? `${daysLeft} day(s) left` : 'expired'
+  }
+
+  render() {
+    const { list, deadline, searchText } = this.state;
     return (
-      <main className='container'>
-        <h1 className='header'> Task Manager</h1>
+      <main className="container">
+        <h1 className="header"> Task Manager</h1>
         <Search handleTextChange={this.matchSearchText} />
-        <label className='labelStyle'>
-          <span className='notesEmoji' role='img' aria-label='notes'>
+        <label className="labelStyle">
+          <span className="notesEmoji" role="img" aria-label="notes">
             &#128221;
-          </span>
+					</span>
           Add Task: &nbsp;
-        </label>
+				</label>
         <div>
-          <input
-            className='inputStyle'
-            onChange={e => this.setState({ name: e.target.value })}
-          />
-          <button className='buttonStyle' onClick={this.addTask}>
-            Add
-          </button>
+          <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
+          <button className='buttonStyle buttonAnimate' onClick={this.addTask}>Add</button>
+          <div className="sortContainer" onClick={this.toggleSortDirection}>
+            <button className='buttonStyle'>Sort by Deadline</button>
+            <button className='buttonStyle'>{sortSymbols[this.state.sortDirection]}</button>
+          </div>
         </div>
         <ol>
-          {list.map(
-            (item, i) =>
+          <CSSTransitionGroup
+            transitionName="slide"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {list.map(item => (
               item.name.toLowerCase().includes(searchText) && (
-                <li key={i}>
+                <li>
                   <input
-                    className='listInput'
+                    className="listInput"
                     onChange={e =>
                       this.setState({
                         list: list.map(value =>
-                          value.id === item.id
-                            ? { ...value, name: e.target.value }
-                            : value
-                        )
+                          value.id === item.id ? { ...value, name: e.target.value } : value
+                        ),
                       })
                     }
                     value={item.name}
                   />
+                  {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)}</button>}
                   {item.deadline || deadline === item.id ? (
                     <input
-                      className='listInputDeadline'
+                      className="listInputDeadline"
                       value={item.deadline}
                       onChange={e =>
                         this.setState({
@@ -153,36 +183,30 @@ class App extends Component {
                             value.id === item.id
                               ? { ...value, deadline: e.target.value }
                               : value
-                          )
+                          ),
                         })
                       }
-                      type='date'
+                      type="date"
                       defaultValue={item.deadline}
                     />
                   ) : (
-                    <button
-                      className='itemButton'
-                      onClick={() => this.setState({ deadline: item.id })}
-                    >
-                      Add Deadline
-                    </button>
-                  )}
-                  <button
-                    className='itemButton'
-                    onClick={() => this.update(item.id)}
-                  >
+                      <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
+                        Add Deadline
+									</button>
+                    )}
+                  <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
                     Update
-                  </button>
+								</button>
                   <button
-                    className='itemButton'
+                    className="itemButton buttonAnimate"
                     style={{ color: 'red' }}
                     onClick={() => this.deleteTask(item.id)}
                   >
                     X
-                  </button>
-                </li>
-              )
-          )}
+								</button>
+                </li>)
+            ))}
+          </CSSTransitionGroup>
         </ol>
         {this.state.alert.shown && (
           <Alert
