@@ -83,6 +83,10 @@ class App extends Component {
     this.setState({ deadline: '' })
   }
 
+  getID = () => {
+    return Math.floor(Math.random() * 100000);
+  }
+
   render() {
     const { list, deadline } = this.state
     return (
