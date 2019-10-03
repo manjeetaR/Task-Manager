@@ -21,7 +21,8 @@ class App extends Component {
     name: '',
     list: [],
     deadline: '',
-    alert: { shown: false, type: '', success: true }
+    alert: { shown: false, type: '', success: true },
+    searchText: ''
   };
 
   componentWillMount() {
@@ -97,12 +98,18 @@ class App extends Component {
     this.setState({ deadline: '' });
   };
 
+  matchSearchText = searchText => {
+    this.setState({ searchText });
+  };
+
   render() {
     const { list, deadline } = this.state;
+    const searchText = this.state.searchText.toLowerCase();
+
     return (
       <main className='container'>
         <h1 className='header'> Task Manager</h1>
-        <Search />
+        <Search handleTextChange={this.matchSearchText} />
         <label className='labelStyle'>
           <span className='notesEmoji' role='img' aria-label='notes'>
             &#128221;
@@ -119,60 +126,63 @@ class App extends Component {
           </button>
         </div>
         <ol>
-          {list.map((item, i) => (
-            <li key={i}>
-              <input
-                className='listInput'
-                onChange={e =>
-                  this.setState({
-                    list: list.map(value =>
-                      value.id === item.id
-                        ? { ...value, name: e.target.value }
-                        : value
-                    )
-                  })
-                }
-                value={item.name}
-              />
-              {item.deadline || deadline === item.id ? (
-                <input
-                  className='listInputDeadline'
-                  value={item.deadline}
-                  onChange={e =>
-                    this.setState({
-                      list: list.map(value =>
-                        value.id === item.id
-                          ? { ...value, deadline: e.target.value }
-                          : value
-                      )
-                    })
-                  }
-                  type='date'
-                  defaultValue={item.deadline}
-                />
-              ) : (
-                <button
-                  className='itemButton'
-                  onClick={() => this.setState({ deadline: item.id })}
-                >
-                  Add Deadline
-                </button>
-              )}
-              <button
-                className='itemButton'
-                onClick={() => this.update(item.id)}
-              >
-                Update
-              </button>
-              <button
-                className='itemButton'
-                style={{ color: 'red' }}
-                onClick={() => this.deleteTask(item.id)}
-              >
-                X
-              </button>
-            </li>
-          ))}
+          {list.map(
+            (item, i) =>
+              item.name.toLowerCase().includes(searchText) && (
+                <li key={i}>
+                  <input
+                    className='listInput'
+                    onChange={e =>
+                      this.setState({
+                        list: list.map(value =>
+                          value.id === item.id
+                            ? { ...value, name: e.target.value }
+                            : value
+                        )
+                      })
+                    }
+                    value={item.name}
+                  />
+                  {item.deadline || deadline === item.id ? (
+                    <input
+                      className='listInputDeadline'
+                      value={item.deadline}
+                      onChange={e =>
+                        this.setState({
+                          list: list.map(value =>
+                            value.id === item.id
+                              ? { ...value, deadline: e.target.value }
+                              : value
+                          )
+                        })
+                      }
+                      type='date'
+                      defaultValue={item.deadline}
+                    />
+                  ) : (
+                    <button
+                      className='itemButton'
+                      onClick={() => this.setState({ deadline: item.id })}
+                    >
+                      Add Deadline
+                    </button>
+                  )}
+                  <button
+                    className='itemButton'
+                    onClick={() => this.update(item.id)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className='itemButton'
+                    style={{ color: 'red' }}
+                    onClick={() => this.deleteTask(item.id)}
+                  >
+                    X
+                  </button>
+                </li>
+              )
+          )}
         </ol>
         {this.state.alert.shown && (
           <Alert

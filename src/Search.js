@@ -5,6 +5,10 @@ const SearchStyles = {
 };
 
 class Search extends Component {
+  handleChange = e => {
+    this.props.handleTextChange(e.target.value);
+  };
+
   render() {
     return (
       <input
@@ -12,6 +16,7 @@ class Search extends Component {
         style={SearchStyles}
         type='text'
         placeholder='Search tasks'
+        onChange={this.handleChange}
       />
     );
   }
