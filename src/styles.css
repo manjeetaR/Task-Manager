@@ -150,3 +150,24 @@ li {
 .buttonAnimate:active {
 	top: 2px;
 }
+
+.alert {
+  width: 50%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: absolute;
+  bottom: 20px; 
+  text-align: center;
+  border-radius: 10px;
+}
+
+#success {
+  background-color: #4BB543;
+}
+
+#error {
+  background-color: #cc0000;
+}
