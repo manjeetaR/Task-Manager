@@ -11,14 +11,19 @@ const dummyList = [
   {
     id: 1,
     name: "Meeting",
-    deadline: "2019-08-02"
+    deadline: "2019-08-02",
   },
   {
     id: 2,
     name: "Meeting 2",
     deadline: "2019-08-03"
-  },
+  }
 ]
+
+const sortSymbols = {
+  "asc": "▲",
+  "desc": "▼"
+}
 
 class App extends Component {
 
@@ -26,6 +31,7 @@ class App extends Component {
     name: '',
     list: [],
     deadline: '',
+    sortDirection: 'asc',
     alert: { shown: false, type: '', success: true }
   }
 
@@ -90,15 +96,20 @@ class App extends Component {
     this.setState({ deadline: '' })
   }
   
-  sort = asc => {
+  sort = () => {
     // We use [...arr] as sort mutates original array
     const sortedList = [...this.state.list].sort((a, b) => {
       // asc = a-b / desc = b-a
-      const [left, right] = asc ? [a,b] : [b,a]
+      const [left, right] = this.state.sortDirection === 'asc' ? [a,b] : [b,a]
       return new Date(left.deadline).getTime() - new Date(right.deadline).getTime()
     })
     
     this.setState({list: sortedList})
+  }
+  
+  toggleSortDirection = () => {
+    const direction = this.state.sortDirection === 'asc' ? 'desc' : 'asc'
+    this.setState({sortDirection: direction}, () => this.sort());
   }
 
   render() {
@@ -110,8 +121,10 @@ class App extends Component {
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
           <button className='buttonStyle' onClick={this.addTask}>Add</button>
-          <button className='buttonStyle' onClick={() => this.sort(true)}>Sort by Deadline (ASC)</button>
-          <button className='buttonStyle' onClick={() => this.sort()}>Sort by Deadline (DESC)</button>
+          <div className="sortContainer" onClick={this.toggleSortDirection}>
+            <button className='buttonStyle'>Sort by Deadline</button>
+            <button className='buttonStyle'>{sortSymbols[this.state.sortDirection]}</button>
+          </div>
         </div>
         <ol>
           {list.map((item, i) =>
