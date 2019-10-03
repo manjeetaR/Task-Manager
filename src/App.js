@@ -13,14 +13,15 @@ const dummyList = [
   {
     id: 1,
     name: "Meeting",
-    deadline: "2019-08-02",
+    deadline: "2019-10-01T13:00",
   },
   {
     id: 2,
     name: "Meeting 2",
-    deadline: "2019-08-03"
+    deadline: "2019-10-01T13:00"
   }
 ]
+
 
 const sortSymbols = {
   "asc": "▲",
@@ -153,6 +154,13 @@ class App extends Component {
           </div>
         </div>
         <ol>
+          {list.map((item, i) =>
+            <li key={i}><input className='listInput' onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, name: e.target.value } : value) })} value={item.name} />
+              {(item.deadline || deadline === item.id) ? <input className='listInputDeadline' value={item.deadline} onChange={e => this.setState({ list: list.map(value => value.id === item.id ? { ...value, deadline: e.target.value } : value) })} type="datetime-local" defaultValue={item.deadline} /> :
+                <button className='itemButton' onClick={() => this.setState({ deadline: item.id })}>Add Deadline</button>}
+              <button className='itemButton' onClick={() => this.update(item.id)}>Update</button>
+              <button className='itemButton' style={{ color: 'red' }} onClick={() => this.deleteTask(item.id)}>X</button></li>
+          )}
           <CSSTransitionGroup
             transitionName="slide"
             transitionEnterTimeout={500}
@@ -186,7 +194,7 @@ class App extends Component {
                           ),
                         })
                       }
-                      type="date"
+                    type="datetime-local"
                       defaultValue={item.deadline}
                     />
                   ) : (
