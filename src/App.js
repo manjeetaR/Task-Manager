@@ -44,13 +44,13 @@ class App extends Component {
   addTask = async () => {
     this.showAlert({ type: 'add', success: true }) // if successful, success can be omitted since it is true by default
     // if(error) { this.showAlert({ type: 'add', success: false }) } // if there is any error (change condition)
-    const { name, list, priority } = this.state
+    const { name, list } = this.state
     // const subList = await posts.insert([{ name }]).execute()
     const subList = [{
       id: Math.random(),
       name,
       deadline: "",
-      priority
+      priority: 'high'
     }]
     if (subList.length > 0) this.setState({ list: [...list, ...subList] })
   }

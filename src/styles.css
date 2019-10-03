@@ -97,11 +97,13 @@ ol {
     padding-left: 15px;
     padding-right: 15px;
     margin-right: 5px;
+    margin-left: 5px;
 }
 
 li {
   align-self: center;
   align-items: center;
+  margin: 10px 0;
 }
 
 .alert {
