@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faPen, faTrashAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faTrashAlt, faPlus, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Alert from './Alert';
@@ -146,7 +146,7 @@ class App extends Component {
   };
 
   render() {
-    const { list, deadline, searchText, alert } = this.state;
+    const { list, deadline, searchText } = this.state;
     return (
       <main className="container">
         <h1 className="header"> Task Manager</h1>
@@ -171,7 +171,7 @@ class App extends Component {
             style={{ position: "absolute", color: "red", display: 'inline-block', marginLeft: "5px", padding: "10px", ...this.state.list.every(item => !item.isChecked) ? { visibility: 'hidden' } : { visibility: 'visible' } }} 
             onClick={() => this.deleteSelectedTasks()}
           >
-            Delete Selected
+            <FontAwesomeIcon icon={ faTrashAlt }/> Delete Selected
           </button>
           <div className="sortContainer" onClick={this.toggleSortDirection}>
             <button className='buttonStyle'>Sort by Deadline</button>
@@ -224,7 +224,7 @@ class App extends Component {
                     )}
                   <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
                   <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
-                  <FontAwesomeIcon icon={faPen} /> Update
+                  <FontAwesomeIcon icon={faSyncAlt} /> Update
 								</button>
                   <button 
                     className='itemButton' 
