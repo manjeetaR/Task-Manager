@@ -21,6 +21,7 @@ const sortSymbols = {
 
 class App extends Component {
   state = {
+    id: null,
     name: '',
     list: [],
     deadline: '',
@@ -159,17 +160,17 @@ class App extends Component {
 				</label>
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
-          <button 
+          <button
             className='buttonStyle add'
             onClick={this.addTask}
           >
-            <FontAwesomeIcon icon={ faPlus }/> Add
+            <FontAwesomeIcon icon={faPlus} /> Add
           </button>
-          <button 
+          <button
             className={`itemButton deleteSelected ${this.state.list.every(item => !item.isChecked) ? 'hide' : 'show'}`}
             onClick={() => this.deleteSelectedTasks()}
           >
-            <FontAwesomeIcon icon={ faTrashAlt }/> Delete Selected
+            <FontAwesomeIcon icon={faTrashAlt} /> Delete Selected
           </button>
           <div className="sortContainer" onClick={this.toggleSortDirection}>
             <button className='buttonStyle'>Sort by Deadline</button>
@@ -217,28 +218,28 @@ class App extends Component {
                     />
                   ) : (
                       <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
-                      <FontAwesomeIcon icon={ faCalendarAlt }/> Add Deadline
+                        <FontAwesomeIcon icon={faCalendarAlt} /> Add Deadline
 									</button>
                     )}
                   <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
                   <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
-                  <FontAwesomeIcon icon={faSyncAlt} /> Update
+                    <FontAwesomeIcon icon={faSyncAlt} /> Update
 								</button>
-                  <button 
+                  <button
                     className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
                     onClick={() => this.deleteTask(item.id)}
                   >
-                    <FontAwesomeIcon icon={ faTrashAlt }/>
+                    <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
                 </li>)
             ))}
           </CSSTransitionGroup>
         </ol>
         <CSSTransitionGroup
-            transitionName="down"
-            transitionEnterTimeout={300}
-            transitionLeaveTimeout={300}
-          >
+          transitionName="down"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
           {this.state.alert.shown && (
             <Alert
               type={this.state.alert.type}
