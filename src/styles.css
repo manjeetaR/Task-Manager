@@ -130,6 +130,31 @@ ol {
     margin-left: 5px;
 }
 
+.deleteSelected {
+  position: "absolute";
+  color: "red";
+  display: 'inline-block';
+  margin-left: "5px";
+  padding: "10px";
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline-block;
+}
+
+.red {
+  color: #cc0000;
+}
+
+.add {
+  display: inline-block;
+  text-align: center;
+}
+
 li {
   align-self: center;
   align-items: center;
@@ -316,3 +341,5 @@ li {
   width: 100px;
   margin: 10px;
 }
+
+

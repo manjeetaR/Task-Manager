@@ -160,15 +160,13 @@ class App extends Component {
         <div>
           <input className='inputStyle' onChange={e => this.setState({ name: e.target.value })} />
           <button 
-            className='buttonStyle' 
-            onClick={this.addTask} 
-            style={{ display: 'inline-block', textAlign: "center" }}
+            className='buttonStyle add'
+            onClick={this.addTask}
           >
             <FontAwesomeIcon icon={ faPlus }/> Add
           </button>
           <button 
-            className='itemButton'
-            style={{ position: "absolute", color: "red", display: 'inline-block', marginLeft: "5px", padding: "10px", ...this.state.list.every(item => !item.isChecked) ? { visibility: 'hidden' } : { visibility: 'visible' } }} 
+            className={`itemButton deleteSelected ${this.state.list.every(item => !item.isChecked) ? 'hide' : 'show'}`}
             onClick={() => this.deleteSelectedTasks()}
           >
             <FontAwesomeIcon icon={ faTrashAlt }/> Delete Selected
@@ -227,8 +225,7 @@ class App extends Component {
                   <FontAwesomeIcon icon={faSyncAlt} /> Update
 								</button>
                   <button 
-                    className='itemButton' 
-                    style={item.isChecked ? { visibility: 'hidden', color: 'red' } : { visibility: 'visible', color: 'red' }} 
+                    className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
                     onClick={() => this.deleteTask(item.id)}
                   >
                     <FontAwesomeIcon icon={ faTrashAlt }/>
