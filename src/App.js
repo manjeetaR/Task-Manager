@@ -134,6 +134,13 @@ class App extends Component {
     this.setState({ sortDirection: direction }, () => this.sort());
   }
 
+  toggleMode = () => {
+    const htmlTag = document.documentElement;
+    htmlTag.className == 'darkMode' 
+      ? htmlTag.classList.remove("darkMode")
+      : htmlTag.className = 'darkMode'
+  }
+
   timeLeft = (deadline) => {
     const daysLeft = ((new Date(deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)).toFixed(0)
     return daysLeft > 0 ? `${daysLeft} day(s) left` : 'expired'
@@ -247,6 +254,9 @@ class App extends Component {
             />
           )}
         </CSSTransitionGroup>
+        <label className="nameMode">Toggle dark mode</label>
+        <input className="mode-input" id="buttonMode" type="checkbox" onClick={this.toggleMode} />
+        <label className="mode-btn" for="buttonMode"></label>
       </main>
     );
   }

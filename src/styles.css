@@ -8,6 +8,68 @@ html {
 	);
 }
 
+.darkMode {
+  background: linear-gradient(
+    90deg,
+    rgb(39, 35, 35) 0%,
+    rgb(0, 0, 0) 50%,
+    rgb(39,35,35) 100%
+   );
+}
+
+.nameMode {
+    color: #ff751a;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.mode-input:checked + .mode-btn {
+  background: #666666;
+}
+
+.mode-input + .mode-btn {
+  background: #333333;
+  border-radius: 2em;
+  padding: 2px;
+  transition: all .4s ease;
+}
+.mode-input + .mode-btn {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.mode-input:checked + .mode-btn:after {
+  left: 50%;
+}
+.mode-input + .mode-btn:after {
+  border-radius: 50%;
+  background: #fff;
+  transition: all .2s ease;
+}
+.mode-input + .mode-btn:after {
+  left: 0;
+}
+.mode-input + .mode-btn:after {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.mode-input {
+  display: none;
+}
+.mode-input, .mode-input:after, .mode-input:before, .mode-input *, .mode-input *:after, .mode-input *:before, .mode-input + .mode-btn {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Raleway', sans-serif;
 }
