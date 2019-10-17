@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faTrashAlt, faPlus, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faTrashAlt, faPlus, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Alert from './Alert';
@@ -25,6 +25,7 @@ class App extends Component {
     name: '',
     list: [],
     deadline: '',
+    edit: false,
     alert: { shown: false, type: '', success: true },
     searchText: '',
     sortDirection: 'asc'
@@ -58,6 +59,7 @@ class App extends Component {
       name,
       deadline: "",
       isChecked: false,
+      edit: false,
       priority: 'high',
       checkedCallback: (self) => {
         this.setState({ list: this.state.list.map(value => value.id === self.id ? { ...value, isChecked: self.isChecked } : value) });
@@ -74,6 +76,7 @@ class App extends Component {
       deadline: "2019-08-02",
       priority: 'high',
       isChecked: false,
+      edit: false,
       checkedCallback: (self) => {
         this.setState({ list: this.state.list.map(value => value.id === self.id ? { ...value, isChecked: self.isChecked } : value) });
       }
@@ -97,6 +100,13 @@ class App extends Component {
     const deletedList = list.filter(item => item.id === id)
     if (deletedList.length > 0) this.setState({ list: list.filter(item => item.id !== deletedList[0].id) })
   };
+
+  editTask = async (id) => {
+    const { list } = this.state;
+    let currentItem = list.filter((item) => item.id === id);
+    currentItem[0].edit = !currentItem[0].edit;
+    this.setState({ list: list.map((item) => item.id === id ? currentItem[0] : item) });
+  }
 
   updateTask = async (id, name, deadline, isChecked, checkedCallback, priority) => {
     this.showAlert({ type: 'update', success: true }) // if successful, success can be omitted since it is true by default
@@ -155,6 +165,7 @@ class App extends Component {
 
   render() {
     const { list, deadline, searchText } = this.state;
+    console.log(list);
     return (
       <main className="container">
         <h1 className="header"> Task Manager</h1>
@@ -195,7 +206,7 @@ class App extends Component {
                 <li key={item.id}>
                   <Checkbox task={item} />
                   <span className={`priority ${item.priority}`}>{item.priority && item.priority.toUpperCase()}</span>
-                  <input
+                  { item.edit ? <input
                     className="listInput"
                     onChange={e =>
                       this.setState({
@@ -205,9 +216,9 @@ class App extends Component {
                       })
                     }
                     value={item.name}
-                  />
+                  /> : <span className="listInput">{item.name}</span>}
                   {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)}</button>}
-                  {item.deadline || deadline === item.id ? (
+                  { item.edit ? (item.deadline || deadline === item.id) ? (
                     <input
                       className="listInputDeadline"
                       value={item.deadline}
@@ -227,11 +238,17 @@ class App extends Component {
                       <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
                         <FontAwesomeIcon icon={faCalendarAlt} /> Add Deadline
 									</button>
-                    )}
-                  <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
-                  <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
+                    ) : <span>{item.deadline}</span>}
+                  { item.edit ? <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} /> : null }
+                  { item.edit ? <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
                     <FontAwesomeIcon icon={faSyncAlt} /> Update
-								</button>
+								  </button> : null }
+                  <button
+                    className={`itemButton`}
+                    onClick={() => this.editTask(item.id)}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
                   <button
                     className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
                     onClick={() => this.deleteTask(item.id)}
