@@ -71,7 +71,7 @@ class App extends Component {
     const list = [{
       id: 1,
       name: "Meeting",
-      deadline: "2020-10-06T16:41",
+      deadline: "2019-08-02",
       priority: 'high',
       isChecked: false,
       checkedCallback: (self) => {
@@ -136,7 +136,7 @@ class App extends Component {
 
   toggleMode = () => {
     const htmlTag = document.documentElement;
-    htmlTag.className == 'darkMode'
+    htmlTag.className == 'darkMode' 
       ? htmlTag.classList.remove("darkMode")
       : htmlTag.className = 'darkMode'
   }
@@ -226,7 +226,7 @@ class App extends Component {
                   ) : (
                       <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
                         <FontAwesomeIcon icon={faCalendarAlt} /> Add Deadline
-                      </button>
+									</button>
                     )}
                   <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
                   <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
