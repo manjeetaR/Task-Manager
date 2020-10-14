@@ -226,6 +226,16 @@ li {
 	cursor: default;
 }
 
+form{
+  width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.tox .tox-notification--warn,
+.tox .tox-notification--warning {
+  display: none !important;
+}
 /* Transition animation */
 .slide-enter {
 	opacity: 0.01;
