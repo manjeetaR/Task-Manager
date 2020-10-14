@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faTrashAlt, faPlus, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faTrashAlt, faPlus, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './styles.css';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Alert from './Alert';
@@ -27,7 +27,8 @@ class App extends Component {
     deadline: '',
     alert: { shown: false, type: '', success: true },
     searchText: '',
-    sortDirection: 'asc'
+    sortDirection: 'asc',
+    edit: []
   };
 
 
@@ -108,10 +109,10 @@ class App extends Component {
   };
 
   update = id => {
-    const { list } = this.state;
+    const { list, edit } = this.state;
     const data = list.filter(value => value.id === id)[0];
     this.updateTask(id, data.name, data.deadline, data.isChecked, data.checkedCallback, data.priority);
-    this.setState({ deadline: '' });
+    this.setState({ deadline: '', edit: edit.filter(item => item !== id) });
   };
 
   matchSearchText = searchText => {
@@ -136,7 +137,7 @@ class App extends Component {
 
   toggleMode = () => {
     const htmlTag = document.documentElement;
-    htmlTag.className == 'darkMode' 
+    htmlTag.className == 'darkMode'
       ? htmlTag.classList.remove("darkMode")
       : htmlTag.className = 'darkMode'
   }
@@ -154,7 +155,7 @@ class App extends Component {
   };
 
   render() {
-    const { list, deadline, searchText } = this.state;
+    const { list, deadline, searchText, edit } = this.state;
     return (
       <main className="container">
         <h1 className="header"> Task Manager</h1>
@@ -190,56 +191,71 @@ class App extends Component {
             transitionEnterTimeout={500}
             transitionLeaveTimeout={300}
           >
-            {list.map(item => (
-              item.name.toLowerCase().includes(searchText) && (
-                <li key={item.id}>
-                  <Checkbox task={item} />
-                  <span className={`priority ${item.priority}`}>{item.priority && item.priority.toUpperCase()}</span>
-                  <input
-                    className="listInput"
-                    onChange={e =>
-                      this.setState({
-                        list: list.map(value =>
-                          value.id === item.id ? { ...value, name: e.target.value } : value
-                        ),
-                      })
-                    }
-                    value={item.name}
-                  />
-                  {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)}</button>}
-                  {item.deadline || deadline === item.id ? (
-                    <input
-                      className="listInputDeadline"
-                      value={item.deadline}
-                      onChange={e =>
-                        this.setState({
-                          list: list.map(value =>
-                            value.id === item.id
-                              ? { ...value, deadline: e.target.value }
-                              : value
-                          ),
-                        })
-                      }
-                      type="datetime-local"
-                      defaultValue={item.deadline}
-                    />
-                  ) : (
-                      <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
-                        <FontAwesomeIcon icon={faCalendarAlt} /> Add Deadline
-									</button>
-                    )}
-                  <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
-                  <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
-                    <FontAwesomeIcon icon={faSyncAlt} /> Update
-								</button>
-                  <button
-                    className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
-                    onClick={() => this.deleteTask(item.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
-                </li>)
-            ))}
+            {list.map(item => {
+              const editMode = edit.some(val => item.id === val)
+              return (
+                item.name.toLowerCase().includes(searchText) && (
+                  <li key={item.id}>
+                    {editMode ? <><Checkbox task={item} />
+                      <input
+                        className="listInput"
+                        onChange={e =>
+                          this.setState({
+                            list: list.map(value =>
+                              value.id === item.id ? { ...value, name: e.target.value } : value
+                            ),
+                          })
+                        }
+                        value={item.name}
+                      />
+                      {item.deadline && <button className='itemButton'>{this.timeLeft(item.deadline)}</button>}
+                      {item.deadline || deadline === item.id ? (
+                        <input
+                          className="listInputDeadline"
+                          value={item.deadline}
+                          onChange={e =>
+                            this.setState({
+                              list: list.map(value =>
+                                value.id === item.id
+                                  ? { ...value, deadline: e.target.value }
+                                  : value
+                              ),
+                            })
+                          }
+                          type="datetime-local"
+                          defaultValue={item.deadline}
+                        />
+                      ) : (
+                          <button className="itemButton buttonAnimate" onClick={() => this.setState({ deadline: item.id })}>
+                            <FontAwesomeIcon icon={faCalendarAlt} /> Add Deadline
+                          </button>
+                        )}
+                      <Select handleSelect={this.handleSelect} list={list} item={item} priority={item.priority} />
+                      <button
+                        className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
+                        onClick={() => this.deleteTask(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </button>
+
+                    </> : <>
+                        <span className={`priority ${item.priority}`}>{item.priority.toUpperCase()}</span>
+                        <span >{item.name}</span>
+                        <button className='itemButton'>{this.timeLeft(item.deadline)}</button>
+                        <span >{item.deadline}</span></>}
+                    {edit.some(val => item.id === val) ?
+                      <button className="itemButton buttonAnimate" onClick={() => this.update(item.id)}>
+                        <FontAwesomeIcon icon={faSyncAlt} /> Update
+                      </button> :
+                      <button className={`itemButton red ${item.isChecked ? 'hide' : 'show'}`}
+                        onClick={() => this.setState({ edit: [...edit, item.id] })}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>}
+                  </li>)
+              )
+            }
+            )}
           </CSSTransitionGroup>
         </ol>
         <CSSTransitionGroup
