@@ -273,6 +273,9 @@ class App extends Component {
         <label className="nameMode">Toggle dark mode</label>
         <input className="mode-input" id="buttonMode" type="checkbox" onClick={this.toggleMode} />
         <label className="mode-btn" for="buttonMode"></label>
+        <form method='post'>
+          <textarea></textarea>
+        </form>
       </main>
     );
   }
