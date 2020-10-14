@@ -72,7 +72,7 @@ class App extends Component {
     const list = [{
       id: 1,
       name: "Meeting",
-      deadline: "2019-08-02",
+      deadline: "2020-10-06T16:41",
       priority: 'high',
       isChecked: false,
       checkedCallback: (self) => {
