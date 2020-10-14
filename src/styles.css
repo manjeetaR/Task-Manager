@@ -214,6 +214,8 @@ ol {
 li {
   display: flex;
   align-items: center;
+  width: 800px;
+  justify-content: space-between;
 	background: #fff;
 	color: #ff751a;
 	box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
